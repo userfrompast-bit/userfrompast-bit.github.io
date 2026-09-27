@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERDANT // Dark Modern Vlog & Blog</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // Custom Tailwind Configuration for custom Dark Green Palette
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            950: '#06100b', // Ultra dark background
+                            900: '#0b1d13', // Deep background
+                            800: '#122b1e', // Card background
+                            700: '#1b4332', // Border / Muted surface
+                            600: '#2d6a4f', // Secondary accent
+                            500: '#40916c', // Mid green
+                            400: '#52b788', // Primary green accent
+                            300: '#74c69d',
+                            200: '#95d5b2',
+                            100: '#b7e4c7',
+                            50:  '#d8f3dc'  // Soft mint text/highlight
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for sleek aesthetic */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #06100b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1b4332;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2d6a4f;
+        }
+        
+        /* Subtle glow effects */
+        .green-glow {
+            box-shadow: 0 0 25px -5px rgba(82, 183, 136, 0.15);
+        }
+        .green-glow-hover:hover {
+            box-shadow: 0 0 30px -2px rgba(82, 183, 136, 0.3);
+        }
+        
+        /* Glassmorphism background */
+        .glass-panel {
+            background: rgba(18, 43, 30, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(45, 106, 79, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-brand-950 text-gray-200 font-sans antialiased selection:bg-brand-400 selection:text-brand-950 min-h-screen flex flex-col justify-between">
+
+    <!-- NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-brand-800/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 flex items-center justify-center text-brand-950 font-black text-xl shadow-lg transition-transform group-hover:scale-105">
+                    V
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-xl tracking-wider text-white group-hover:text-brand-400 transition-colors">VERDANT</span>
+                    <span class="text-[10px] font-mono tracking-widest text-brand-400 uppercase -mt-1">Vlogs & Insights</span>
+                </div>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
+                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-400"></i>
+                <input type="text" id="searchInput" onkeyup="filterPosts()" placeholder="Search vlogs, topics, or tutorials..." 
+                    class="w-full bg-brand-900/90 border border-brand-700/60 rounded-full py-2 pl-10 pr-4 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-400 transition-all">
+            </div>
+
+            <!-- Categories / Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-medium">
+                <a href="#vlogs" class="text-brand-400 hover:text-white transition-colors">Latest Vlogs</a>
+                <a href="#categories" class="text-gray-400 hover:text-brand-400 transition-colors">Categories</a>
+                <a href="#about" class="text-gray-400 hover:text-brand-400 transition-colors">About Creator</a>
+            </nav>
+
+            <!-- Subscribe Button -->
+            <div class="flex items-center gap-3">
+                <a href="#subscribe" class="inline-flex items-center gap-2 bg-gradient-to-r from-brand-400 to-brand-500 hover:from-brand-300 hover:to-brand-400 text-brand-950 font-semibold px-4 py-2 rounded-full text-sm shadow-md hover:shadow-brand-400/20 transition-all transform active:scale-95">
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                    <span>Subscribe</span>
+                </a>
+                
+                <!-- Mobile Menu Button -->
+                <button id="menuBtn" onclick="toggleMobileMenu()" class="lg:hidden p-2 text-gray-400 hover:text-white rounded-lg bg-brand-900 border border-brand-800">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-brand-800/80 bg-brand-900/95 px-4 pt-4 pb-6 space-y-3">
+            <div class="relative mb-3">
+                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-400"></i>
+                <input type="text" onkeyup="filterPostsMobile(this.value)" placeholder="Search..." 
+                    class="w-full bg-brand-950 border border-brand-700 rounded-full py-2 pl-10 pr-4 text-sm text-gray-200 focus:outline-none focus:border-brand-400">
+            </div>
+            <a href="#vlogs" onclick="toggleMobileMenu()" class="block py-2 text-brand-400 font-medium">Latest Vlogs</a>
+            <a href="#categories" onclick="toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-brand-400">Categories</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-brand-400">About Creator</a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- HERO SECTION: FEATURED VLOG -->
+        <section class="relative rounded-3xl overflow-hidden border border-brand-700/50 bg-gradient-to-b from-brand-900 to-brand-950 p-6 lg:p-10 green-glow">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                <!-- Hero Video Thumbnail Container -->
+                <div class="lg:col-span-7 relative group cursor-pointer overflow-hidden rounded-2xl border border-brand-700/60 shadow-2xl" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Cinematic Dark Aesthetics & Tech Setup (2026 Vlog)')">
+                    <img src="https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=1200&q=80" alt="Featured Vlog Thumbnail" class="w-full h-80 sm:h-96 object-cover transform group-hover:scale-105 transition-transform duration-500 brightness-90 group-hover:brightness-100">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/20 to-transparent"></div>
+                    
+                    <!-- Play Button Overlay -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-brand-400/90 text-brand-950 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300 border-4 border-brand-950">
+                            <i data-lucide="play" class="w-8 h-8 sm:w-10 sm:h-10 fill-current translate-x-0.5"></i>
+                        </div>
+                    </div>
+
+                    <!-- Badge -->
+                    <div class="absolute top-4 left-4 bg-brand-950/80 backdrop-blur-md text-brand-400 text-xs font-mono font-bold px-3 py-1.5 rounded-full border border-brand-600/40 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+                        FEATURED VLOG
+                    </div>
+
+                    <div class="absolute bottom-4 right-4 bg-brand-950/80 backdrop-blur-md text-gray-300 text-xs font-mono px-2.5 py-1 rounded border border-brand-800">
+                        14:25
+                    </div>
+                </div>
+
+                <!-- Hero Text Details -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3 text-xs font-mono text-brand-400">
+                        <span class="bg-brand-800/80 px-2.5 py-1 rounded-md border border-brand-700">CREATIVE TECH</span>
+                        <span>•</span>
+                        <span>May 24, 2026</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight hover:text-brand-300 transition-colors cursor-pointer" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Cinematic Dark Aesthetics & Tech Setup (2026 Vlog)')">
+                        Building the Ultimate Dark Green Minimal Workspace & Workflow
+                    </h1>
+
+                    <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                        Step inside our modern studio setup. In this vlog, we explore ambient dark aesthetic lighting, high-productivity coding environments, and minimalistic hardware design.
+                    </p>
+
+                    <!-- Author Info & Actions -->
+                    <div class="pt-4 flex items-center justify-between border-t border-brand-800/80">
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Creator Avatar" class="w-10 h-10 rounded-full border-2 border-brand-400 object-cover">
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Elena Vance</h4>
+                                <p class="text-xs text-gray-400">Tech & Design Creator</p>
+                            </div>
+                        </div>
+
+                        <button onclick="toggleLike(this)" class="flex items-center gap-1.5 text-xs text-gray-400 hover:text-brand-400 transition-colors bg-brand-900 border border-brand-800 px-3 py-1.5 rounded-full">
+                            <i data-lucide="heart" class="w-4 h-4"></i>
+                            <span class="like-count">1.2k</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORY FILTERS -->
+        <section id="categories" class="space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i data-lucide="sliders" class="w-5 h-5 text-brand-400"></i>
+                    <span>Explore Topics</span>
+                </h2>
+                <span class="text-xs text-gray-500 font-mono">Showing all entries</span>
+            </div>
+
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                <button onclick="filterCategory('all', this)" class="category-btn active bg-brand-400 text-brand-950 font-semibold px-4 py-2 rounded-xl text-xs whitespace-nowrap transition-all border border-brand-400">All Posts</button>
+                <button onclick="filterCategory('vlogs', this)" class="category-btn bg-brand-900 text-gray-300 hover:text-white px-4 py-2 rounded-xl text-xs whitespace-nowrap transition-all border border-brand-800 hover:border-brand-600">🎥 Vlogs</button>
+                <button onclick="filterCategory('tech', this)" class="category-btn bg-brand-900 text-gray-300 hover:text-white px-4 py-2 rounded-xl text-xs whitespace-nowrap transition-all border border-brand-800 hover:border-brand-600">💻 Tech & Setup</button>
+                <button onclick="filterCategory('lifestyle', this)" class="category-btn bg-brand-900 text-gray-300 hover:text-white px-4 py-2 rounded-xl text-xs whitespace-nowrap transition-all border border-brand-800 hover:border-brand-600">🌿 Lifestyle</button>
+                <button onclick="filterCategory('tutorials', this)" class="category-btn bg-brand-900 text-gray-300 hover:text-white px-4 py-2 rounded-xl text-xs whitespace-nowrap transition-all border border-brand-800 hover:border-brand-600">🚀 Code & Tutorials</button>
+            </div>
+        </section>
+
+        <!-- MAIN CONTENT FEED -->
+        <section id="vlogs" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="postsContainer">
+                
+                <!-- CARD 1 -->
+                <article class="post-card group bg-brand-900/60 border border-brand-800/80 rounded-2xl overflow-hidden hover:border-brand-500/50 transition-all duration-300 flex flex-col justify-between green-glow-hover" data-category="vlogs">
+                    <div>
+                        <!-- Thumbnail -->
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Night Coding & Aesthetic Desk Setup Vlog')">
+                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80" alt="Vlog thumbnail" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 brightness-90 group-hover:brightness-100">
+                            <div class="absolute inset-0 bg-brand-950/20 group-hover:bg-transparent transition-colors"></div>
+                            
+                            <div class="absolute top-3 left-3 bg-brand-950/80 backdrop-blur-md text-brand-400 text-[10px] font-mono px-2.5 py-1 rounded-md border border-brand-700">
+                                VLOG #42
+                            </div>
+
+                            <div class="absolute bottom-3 right-3 bg-brand-950/90 text-gray-200 text-xs px-2 py-0.5 rounded font-mono">
+                                08:45
+                            </div>
+
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="w-12 h-12 rounded-full bg-brand-400 text-brand-950 flex items-center justify-center shadow-lg">
+                                    <i data-lucide="play" class="w-6 h-6 fill-current translate-x-0.5"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2 text-xs font-mono text-brand-400">
+                                <span>vlogs</span>
+                                <span>•</span>
+                                <span>6 min read</span>
+                            </div>
+
+                            <h3 class="text-lg font-bold text-white group-hover:text-brand-300 transition-colors line-clamp-2 cursor-pointer" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Night Coding & Aesthetic Desk Setup Vlog')">
+                                Late Night Coding & Dark Mode Ergonomics Vlog
+                            </h3>
+
+                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-3">
+                                Join me on a quiet midnight coding session where we configure custom dark green neovim themes and discuss mechanical keyboards.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-brand-800/40 text-xs text-gray-400">
+                        <span class="font-mono text-[11px]">May 18, 2026</span>
+                        <div class="flex items-center gap-3">
+                            <button onclick="toggleBookmark(this)" class="hover:text-brand-400 transition-colors">
+                                <i data-lucide="bookmark" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="toggleLike(this)" class="flex items-center gap-1 hover:text-brand-400 transition-colors">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                                <span class="like-count">842</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- CARD 2 -->
+                <article class="post-card group bg-brand-900/60 border border-brand-800/80 rounded-2xl overflow-hidden hover:border-brand-500/50 transition-all duration-300 flex flex-col justify-between green-glow-hover" data-category="tech">
+                    <div>
+                        <!-- Thumbnail -->
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Top 5 Dark Green Developer Accessories')">
+                            <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=800&q=80" alt="Tech setup thumbnail" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 brightness-90 group-hover:brightness-100">
+                            
+                            <div class="absolute top-3 left-3 bg-brand-950/80 backdrop-blur-md text-brand-400 text-[10px] font-mono px-2.5 py-1 rounded-md border border-brand-700">
+                                TECH REVIEW
+                            </div>
+
+                            <div class="absolute bottom-3 right-3 bg-brand-950/90 text-gray-200 text-xs px-2 py-0.5 rounded font-mono">
+                                11:20
+                            </div>
+
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="w-12 h-12 rounded-full bg-brand-400 text-brand-950 flex items-center justify-center shadow-lg">
+                                    <i data-lucide="play" class="w-6 h-6 fill-current translate-x-0.5"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2 text-xs font-mono text-brand-400">
+                                <span>tech</span>
+                                <span>•</span>
+                                <span>4 min read</span>
+                            </div>
+
+                            <h3 class="text-lg font-bold text-white group-hover:text-brand-300 transition-colors line-clamp-2 cursor-pointer">
+                                Top Minimalist Gear for Forest & Dark Aesthetic Desks
+                            </h3>
+
+                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-3">
+                                Reviewing my favorite dark green desk mats, custom keycap sets, and mood lighting gear that keeps workspace distractions low.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-brand-800/40 text-xs text-gray-400">
+                        <span class="font-mono text-[11px]">May 12, 2026</span>
+                        <div class="flex items-center gap-3">
+                            <button onclick="toggleBookmark(this)" class="hover:text-brand-400 transition-colors">
+                                <i data-lucide="bookmark" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="toggleLike(this)" class="flex items-center gap-1 hover:text-brand-400 transition-colors">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                                <span class="like-count">512</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- CARD 3 -->
+                <article class="post-card group bg-brand-900/60 border border-brand-800/80 rounded-2xl overflow-hidden hover:border-brand-500/50 transition-all duration-300 flex flex-col justify-between green-glow-hover" data-category="tutorials">
+                    <div>
+                        <!-- Thumbnail -->
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Hosting Sites for Free on GitHub Pages')">
+                            <img src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=800&q=80" alt="GitHub Pages Tutorial" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 brightness-90 group-hover:brightness-100">
+                            
+                            <div class="absolute top-3 left-3 bg-brand-950/80 backdrop-blur-md text-brand-400 text-[10px] font-mono px-2.5 py-1 rounded-md border border-brand-700">
+                                GUIDE
+                            </div>
+
+                            <div class="absolute bottom-3 right-3 bg-brand-950/90 text-gray-200 text-xs px-2 py-0.5 rounded font-mono">
+                                15:10
+                            </div>
+
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="w-12 h-12 rounded-full bg-brand-400 text-brand-950 flex items-center justify-center shadow-lg">
+                                    <i data-lucide="play" class="w-6 h-6 fill-current translate-x-0.5"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2 text-xs font-mono text-brand-400">
+                                <span>tutorials</span>
+                                <span>•</span>
+                                <span>10 min read</span>
+                            </div>
+
+                            <h3 class="text-lg font-bold text-white group-hover:text-brand-300 transition-colors line-clamp-2 cursor-pointer">
+                                Free Web Hosting Masterclass: GitHub Pages 2026
+                            </h3>
+
+                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-3">
+                                Learn how to push custom HTML/Tailwind templates directly to GitHub Pages with custom domain binding and automated deployments.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-brand-800/40 text-xs text-gray-400">
+                        <span class="font-mono text-[11px]">May 05, 2026</span>
+                        <div class="flex items-center gap-3">
+                            <button onclick="toggleBookmark(this)" class="hover:text-brand-400 transition-colors">
+                                <i data-lucide="bookmark" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="toggleLike(this)" class="flex items-center gap-1 hover:text-brand-400 transition-colors">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                                <span class="like-count">1.8k</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- CARD 4 -->
+                <article class="post-card group bg-brand-900/60 border border-brand-800/80 rounded-2xl overflow-hidden hover:border-brand-500/50 transition-all duration-300 flex flex-col justify-between green-glow-hover" data-category="lifestyle">
+                    <div>
+                        <!-- Thumbnail -->
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Forest Meditation & Solitude Vlog')">
+                            <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80" alt="Forest Vlog" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 brightness-90 group-hover:brightness-100">
+                            
+                            <div class="absolute top-3 left-3 bg-brand-950/80 backdrop-blur-md text-brand-400 text-[10px] font-mono px-2.5 py-1 rounded-md border border-brand-700">
+                                LIFESTYLE
+                            </div>
+
+                            <div class="absolute bottom-3 right-3 bg-brand-950/90 text-gray-200 text-xs px-2 py-0.5 rounded font-mono">
+                                19:02
+                            </div>
+
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="w-12 h-12 rounded-full bg-brand-400 text-brand-950 flex items-center justify-center shadow-lg">
+                                    <i data-lucide="play" class="w-6 h-6 fill-current translate-x-0.5"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2 text-xs font-mono text-brand-400">
+                                <span>lifestyle</span>
+                                <span>•</span>
+                                <span>5 min read</span>
+                            </div>
+
+                            <h3 class="text-lg font-bold text-white group-hover:text-brand-300 transition-colors line-clamp-2 cursor-pointer">
+                                Forest Walk Meditation & Digital Detox Weekend
+                            </h3>
+
+                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-3">
+                                Taking time off screens to recharge in nature. Unplugging strategies for developers and digital creators.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-brand-800/40 text-xs text-gray-400">
+                        <span class="font-mono text-[11px]">Apr 28, 2026</span>
+                        <div class="flex items-center gap-3">
+                            <button onclick="toggleBookmark(this)" class="hover:text-brand-400 transition-colors">
+                                <i data-lucide="bookmark" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="toggleLike(this)" class="flex items-center gap-1 hover:text-brand-400 transition-colors">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                                <span class="like-count">930</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ABOUT CREATOR SECTION -->
+        <section id="about" class="rounded-3xl bg-brand-900/40 border border-brand-800 p-8 sm:p-12 relative overflow-hidden flex flex-col md:flex-row gap-8 items-center">
+            <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-2 border-brand-400 flex-shrink-0 relative">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Elena Vance" class="w-full h-full object-cover">
+            </div>
+            
+            <div class="space-y-4 text-center md:text-left">
+                <div class="inline-block bg-brand-800/80 text-brand-400 text-xs font-mono px-3 py-1 rounded-full border border-brand-700">
+                    BEHIND THE CAMERA
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Hey, I'm Elena Vance</h2>
+                <p class="text-gray-400 text-sm leading-relaxed max-w-2xl">
+                    I'm a full-stack engineer and digital creator passionate about dark aesthetic ergonomics, minimal tech setups, and software craft. I document my daily vlogs and tech tutorials here on my self-hosted GitHub page.
+                </p>
+                <div class="flex items-center justify-center md:justify-start gap-4 pt-2">
+                    <a href="#" class="p-2 rounded-xl bg-brand-800 hover:bg-brand-700 text-gray-300 hover:text-white transition-colors border border-brand-700"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                    <a href="#" class="p-2 rounded-xl bg-brand-800 hover:bg-brand-700 text-gray-300 hover:text-white transition-colors border border-brand-700"><i data-lucide="github" class="w-5 h-5"></i></a>
+                    <a href="#" class="p-2 rounded-xl bg-brand-800 hover:bg-brand-700 text-gray-300 hover:text-white transition-colors border border-brand-700"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#" class="p-2 rounded-xl bg-brand-800 hover:bg-brand-700 text-gray-300 hover:text-white transition-colors border border-brand-700"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEWSLETTER SUBSCRIPTION SECTION -->
+        <section id="subscribe" class="rounded-3xl bg-gradient-to-r from-brand-900 via-brand-800 to-brand-900 border border-brand-600/50 p-8 sm:p-12 text-center relative overflow-hidden green-glow">
+            <div class="max-w-2xl mx-auto space-y-6 relative z-10">
+                <div class="w-12 h-12 rounded-2xl bg-brand-400 text-brand-950 flex items-center justify-center mx-auto shadow-lg">
+                    <i data-lucide="mail" class="w-6 h-6"></i>
+                </div>
+                
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Join the Dark Mode Newsletter</h2>
+                <p class="text-gray-300 text-sm">
+                    Get weekly updates on new vlog releases, free code templates, and aesthetic setup guides straight to your inbox. No spam ever.
+                </p>
+
+                <form id="newsletterForm" onsubmit="handleSubscribe(event)" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                    <input type="email" required placeholder="Enter your email address..." class="flex-1 bg-brand-950 border border-brand-700 rounded-xl px-4 py-3 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-400">
+                    <button type="submit" class="bg-brand-400 hover:bg-brand-300 text-brand-950 font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </form>
+
+                <div id="subscribeSuccess" class="hidden text-brand-400 text-sm font-semibold flex items-center justify-center gap-2">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    <span>Thank you for subscribing! Check your inbox soon.</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- INTERACTIVE VIDEO PLAYER MODAL -->
+    <div id="videoModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-brand-900 border border-brand-700 rounded-2xl overflow-hidden max-w-4xl w-full shadow-2xl relative">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-brand-800 flex items-center justify-between">
+                <h3 id="modalVideoTitle" class="text-white font-bold text-sm sm:text-base truncate pr-4">Video Title</h3>
+                <button onclick="closeVideoModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-brand-800 hover:bg-brand-700 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Video Container -->
+            <div class="relative pt-[56.25%] bg-black">
+                <iframe id="modalIframe" class="absolute inset-0 w-full h-full" src="" title="Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-brand-800/80 bg-brand-950 py-10 mt-16 text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md bg-brand-400 text-brand-950 font-bold flex items-center justify-center text-xs">V</div>
+                <span class="text-gray-300 font-bold">VERDANT VLOGS</span>
+                <span>© 2026 All Rights Reserved.</span>
+            </div>
+
+            <div class="flex items-center gap-6 text-gray-400">
+                <a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-brand-400 transition-colors">Terms of Service</a>
+                <a href="https://github.com" target="_blank" class="hover:text-brand-400 transition-colors flex items-center gap-1">
+                    <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                    <span>GitHub Pages Ready</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Open Video Modal
+        function openVideoModal(videoUrl, title) {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('modalIframe');
+            const titleElement = document.getElementById('modalVideoTitle');
+
+            // Set video URL (Autoplay enabled)
+            iframe.src = videoUrl.includes('?') ? videoUrl + '&autoplay=1' : videoUrl + '?autoplay=1';
+            titleElement.textContent = title;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Lock scroll
+        }
+
+        // Close Video Modal
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('modalIframe');
+
+            iframe.src = ''; // Stop video playback
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto'; // Restore scroll
+        }
+
+        // Category Filter Logic
+        function filterCategory(category, btnElement) {
+            // Update active state on buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-400', 'text-brand-950', 'font-semibold');
+                btn.classList.add('bg-brand-900', 'text-gray-300');
+            });
+            btnElement.classList.remove('bg-brand-900', 'text-gray-300');
+            btnElement.classList.add('bg-brand-400', 'text-brand-950', 'font-semibold');
+
+            // Filter post cards
+            const posts = document.querySelectorAll('.post-card');
+            posts.forEach(post => {
+                if (category === 'all' || post.getAttribute('data-category') === category) {
+                    post.style.display = 'flex';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        // Search Filter Logic
+        function filterPosts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const posts = document.querySelectorAll('.post-card');
+
+            posts.forEach(post => {
+                const title = post.querySelector('h3').textContent.toLowerCase();
+                const desc = post.querySelector('p').textContent.toLowerCase();
+
+                if (title.includes(query) || desc.includes(query)) {
+                    post.style.display = 'flex';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        function filterPostsMobile(value) {
+            document.getElementById('searchInput').value = value;
+            filterPosts();
+        }
+
+        // Interactive Like Toggle
+        function toggleLike(btn) {
+            const heartIcon = btn.querySelector('i');
+            const countSpan = btn.querySelector('.like-count');
+            let count = parseInt(countSpan.textContent.replace('k', '000').replace('.', ''));
+
+            if (btn.classList.contains('text-brand-400')) {
+                btn.classList.remove('text-brand-400');
+                btn.classList.add('text-gray-400');
+                heartIcon.setAttribute('fill', 'none');
+            } else {
+                btn.classList.add('text-brand-400');
+                btn.classList.remove('text-gray-400');
+                heartIcon.setAttribute('fill', 'currentColor');
+            }
+        }
+
+        // Interactive Bookmark Toggle
+        function toggleBookmark(btn) {
+            const icon = btn.querySelector('i');
+            if (btn.classList.contains('text-brand-400')) {
+                btn.classList.remove('text-brand-400');
+                icon.setAttribute('fill', 'none');
+            } else {
+                btn.classList.add('text-brand-400');
+                icon.setAttribute('fill', 'currentColor');
+            }
+        }
+
+        // Newsletter Handler
+        function handleSubscribe(event) {
+            event.preventDefault();
+            const form = document.getElementById('newsletterForm');
+            const successMsg = document.getElementById('subscribeSuccess');
+
+            form.classList.add('hidden');
+            successMsg.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
