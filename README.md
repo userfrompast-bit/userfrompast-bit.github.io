@@ -5,7 +5,7 @@ Welcome to the official repository of this project! Managed by **[@Znoozy](https
 ---
 
 ## 👥 Contributors
-* **Admin:** [@Znoozy](https://github.com/Znoozy)
+* **Admin:** [@userfrompast-bit](https://github.com/userfrompast-bit)
 * **Developer:** [@MaliduSL](https://github.com/MaliduSL)
 
 ---
