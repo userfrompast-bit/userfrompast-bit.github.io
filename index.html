@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VERDANT // Dark Modern Vlog & Blog</title>
+    <title>VERDANT // Blue Purple Cyan Vlog & Blog</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -28,12 +29,16 @@
             </div>
 
             <nav class="nav-links">
-                <a href="#vlogs" class="current">Latest Vlogs</a>
+                <a href="#vlogs">Latest Vlogs</a>
                 <a href="#categories">Categories</a>
                 <a href="#about">About Creator</a>
             </nav>
 
             <div class="nav-actions">
+                <button id="themeBtn" class="theme-btn" aria-label="Switch to light mode" title="Toggle light / dark">
+                    <span class="i-sun"><i data-lucide="sun"></i></span>
+                    <span class="i-moon"><i data-lucide="moon"></i></span>
+                </button>
                 <a href="#subscribe" class="btn-sub">
                     <i data-lucide="bell" class="icon"></i><span>Subscribe</span>
                 </a>
@@ -48,7 +53,7 @@
                 <i data-lucide="search" class="icon"></i>
                 <input type="text" id="mobileSearch" placeholder="Search...">
             </div>
-            <a href="#vlogs" class="current">Latest Vlogs</a>
+            <a href="#vlogs">Latest Vlogs</a>
             <a href="#categories">Categories</a>
             <a href="#about">About Creator</a>
         </div>
@@ -57,7 +62,7 @@
     <main class="wrap">
 
         <!-- HERO -->
-        <section class="hero green-glow">
+        <section class="hero glow">
             <div class="hero-grid">
                 <div class="hero-media" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Cinematic Dark Aesthetics & Tech Setup (2026 Vlog)">
                     <img src="https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=1200&q=80" alt="Featured Vlog Thumbnail">
@@ -71,7 +76,7 @@
                         <span class="pill">CREATIVE TECH</span><span>•</span><span>May 24, 2026</span>
                     </div>
                     <h1 data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Cinematic Dark Aesthetics & Tech Setup (2026 Vlog)">
-                        Building the Ultimate Dark Green Minimal Workspace &amp; Workflow
+                        Building the Ultimate Neon Minimal Workspace &amp; Workflow
                     </h1>
                     <p>Step inside our modern studio setup. In this vlog, we explore ambient dark aesthetic lighting, high-productivity coding environments, and minimalistic hardware design.</p>
                     <div class="author-row">
@@ -83,6 +88,34 @@
                             <i data-lucide="heart" class="icon"></i><span>1.2k</span>
                         </button>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VLOG SQUARES -->
+        <section id="squares">
+            <div class="section-head">
+                <h2><i data-lucide="layout-grid"></i><span>Quick Vlogs</span></h2>
+                <small class="mono">Tap a square to play</small>
+            </div>
+            <div class="squares">
+                <div class="sq" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Neon Desk Tour">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=700&q=80" alt="Neon Desk Tour">
+                    <div class="sq-tag mono">VLOG #45</div>
+                    <div class="sq-play"><i data-lucide="play"></i></div>
+                    <div class="sq-info"><h3>Neon Desk Tour</h3><small class="mono">3.2k views • 2 days ago</small></div>
+                </div>
+                <div class="sq" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="City Night Walk">
+                    <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=700&q=80" alt="City Night Walk">
+                    <div class="sq-tag mono">VLOG #44</div>
+                    <div class="sq-play"><i data-lucide="play"></i></div>
+                    <div class="sq-info"><h3>City Night Walk</h3><small class="mono">2.7k views • 5 days ago</small></div>
+                </div>
+                <div class="sq" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Studio Light Setup">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=700&q=80" alt="Studio Light Setup">
+                    <div class="sq-tag mono">VLOG #43</div>
+                    <div class="sq-play"><i data-lucide="play"></i></div>
+                    <div class="sq-info"><h3>Studio Light Setup</h3><small class="mono">4.1k views • 1 week ago</small></div>
                 </div>
             </div>
         </section>
@@ -117,7 +150,7 @@
                         <div class="card-body">
                             <div class="meta mono"><span>vlogs</span><span>•</span><span>6 min read</span></div>
                             <h3 data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Night Coding & Aesthetic Desk Setup Vlog">Late Night Coding &amp; Dark Mode Ergonomics Vlog</h3>
-                            <p>Join me on a quiet midnight coding session where we configure custom dark green neovim themes and discuss mechanical keyboards.</p>
+                            <p>Join me on a quiet midnight coding session where we configure custom neon neovim themes and discuss mechanical keyboards.</p>
                         </div>
                     </div>
                     <div class="card-foot">
@@ -131,7 +164,7 @@
 
                 <article class="card" data-category="tech">
                     <div>
-                        <div class="thumb" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Top 5 Dark Green Developer Accessories">
+                        <div class="thumb" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Top 5 Neon Developer Accessories">
                             <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=800&q=80" alt="Tech setup thumbnail">
                             <div class="tag mono">TECH REVIEW</div>
                             <div class="duration mono">11:20</div>
@@ -139,8 +172,8 @@
                         </div>
                         <div class="card-body">
                             <div class="meta mono"><span>tech</span><span>•</span><span>4 min read</span></div>
-                            <h3 data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Top 5 Dark Green Developer Accessories">Top Minimalist Gear for Forest &amp; Dark Aesthetic Desks</h3>
-                            <p>Reviewing my favorite dark green desk mats, custom keycap sets, and mood lighting gear that keeps workspace distractions low.</p>
+                            <h3 data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" data-title="Top 5 Neon Developer Accessories">Top Minimalist Gear for Cyberpunk &amp; Dark Aesthetic Desks</h3>
+                            <p>Reviewing my favorite neon desk mats, custom keycap sets, and mood lighting gear that keeps workspace distractions low.</p>
                         </div>
                     </div>
                     <div class="card-foot">
@@ -220,7 +253,7 @@
         </section>
 
         <!-- NEWSLETTER -->
-        <section id="subscribe" class="newsletter green-glow">
+        <section id="subscribe" class="newsletter glow">
             <div class="news-inner">
                 <div class="news-icon"><i data-lucide="mail"></i></div>
                 <h2>Join the Dark Mode Newsletter</h2>
@@ -272,6 +305,18 @@
         const $ = (s, r = document) => r.querySelector(s);
         const $$ = (s, r = document) => [...r.querySelectorAll(s)];
         const modal = $('#videoModal'), iframe = $('#modalIframe');
+
+        // Light / dark theme toggle
+        const root = document.documentElement, themeBtn = $('#themeBtn');
+        const syncThemeLabel = () => themeBtn.setAttribute('aria-label',
+            root.dataset.theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+        syncThemeLabel();
+        themeBtn.onclick = () => {
+            const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+            root.dataset.theme = next;
+            try { localStorage.setItem('theme', next); } catch (e) {}
+            syncThemeLabel();
+        };
 
         // Mobile menu
         $('#menuBtn').onclick = () => $('#mobileMenu').classList.toggle('hidden');
