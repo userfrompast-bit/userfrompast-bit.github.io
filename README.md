@@ -1,6 +1,6 @@
 # 🚀 Trial Website
 
-Welcome to the official repository of this project! Managed by **[@Znoozy](https://github.com/Znoozy)**.
+Welcome to the official repository of this project! Managed by **[@Znoozy](https://github.com/userfrompast-bit)**.
 
 ---
 
